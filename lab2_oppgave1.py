@@ -7,6 +7,10 @@ lam = 60
 k = 0
 n = 5
 m = 5
+Q_min = 0.5
+pris = 0
+
+
 def user_time():
     return np.random.exponential(lam)
 
@@ -19,7 +23,6 @@ def user3_generator(env):
         yield env.timeout(time_between_instances())
         env.process(user3, i)
         i += 1
-        k += 1
 
 def calculate_Q(m,n,k):
     #m - antall resource slots, n - antall servere, k - antall brukere
@@ -40,23 +43,31 @@ def calculate_MOS(Q):
     else: return 1
 
 def user3(env, id):
-    print(f'User {id} logged in')
-    user_login = env.now
-    yield env.timeout(user_time())
-    time_active = env.now - user_login
-    print(f'User {id} was active for {time_active} minutes')
+    k = k+1
+    if Q_min < calculate_Q(m,n,k):
+        print(f'User {id} logged in')
+        user_login = env.now
+        yield env.timeout(user_time())
+        time_active = env.now - user_login
+        print(f'User {id} was active for {time_active} minutes')
+        k = k-1
+    else:
+        k = k-1
 
 
 def add_server():
-    n += 1
+    n = n+1
 
 def remove_server():
-    n -= 1
+    n = n-1
 
 def check_price_level():
     p_low = 0.1
     p_medium  = 1
     p_high = 5
+
+    yield env.timeout(1)
+
 
     
 
