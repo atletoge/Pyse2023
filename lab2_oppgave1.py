@@ -12,8 +12,8 @@ Q_min = 0.5
 price = 0
 q = 1
 
-def user_time():
-    return np.random.exponential(1)
+# def user_time():
+#     return np.random.exponential(1)     Tror ikke vi trenger denne
 
 def time_between_instances(): #bytte navn?
     return np.random.exponential(lam)
@@ -51,7 +51,7 @@ def user3(env, id):
         print(f'User {id} logged in')
         user_login = env.now
         userPrice = calculate_price_for_user()
-        yield env.timeout(user_time())
+        yield env.timeout(1) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
         time_active = env.now - user_login
         calculate_Q(m,n,k)
         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q} for the price of {userPrice} NOK.')
