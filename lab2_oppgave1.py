@@ -1,5 +1,6 @@
 import simpy
 import numpy as np
+import random
 
 env = simpy.Environment()
 SIM_TIME = 60*24
@@ -8,14 +9,14 @@ k = 0
 n = 5
 m = 5
 Q_min = 0.5
-pris = 0
+price = 0
 
 
 def user_time():
-    return np.random.exponential(lam)
+    return np.random.exponential(1)
 
 def time_between_instances(): #bytte navn?
-    return np.random.exponential(lam/2)
+    return np.random.exponential(lam)
 
 def user3_generator(env):
     i = 1
@@ -56,17 +57,33 @@ def user3(env, id):
 
 
 def add_server():
-    n = n+1
+    if (n<11):
+        n = n+1
 
 def remove_server():
-    n = n-1
+    if (n>2):
+        n = n-1
 
 def check_price_level():
     p_low = 0.1
     p_medium  = 1
     p_high = 5
+    Liste = ["low", "high"]
+    while True:
+        price = p_low
+        yield env.timeout(1)
+        while True:
+            price = p_medium
+            yield env.timeout(1)
+            if(random.choice(Liste) == "low"): #Bruker bare random.choice her siden sannsynlighetsvariabelen p ikke er definert i oppgavetekstene, blir i praksis 0.5
+                break
+            else:
+                price = p_high
+                yield env.timeout(2)
+       
+        
 
-    yield env.timeout(1)
+
 
 
     
