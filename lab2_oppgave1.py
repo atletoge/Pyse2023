@@ -11,6 +11,7 @@ m = 5
 Q_min = 0.5
 price = 0
 q = 1
+i = 0 #Flytta denne opp hit
 
 # def user_time():
 #     return np.random.exponential(1)     Tror ikke vi trenger denne
@@ -19,11 +20,11 @@ def time_between_instances(): #bytte navn?
     return np.random.exponential(lam)
 
 def user3_generator(env):
-    i = 1
     while True:
+        i = i + 1
         yield env.timeout(time_between_instances())
         env.process(user3, i)
-        i += 1
+
 
 def calculate_Q(m,n,k):
     #m - antall resource slots, n - antall servere, k - antall brukere
