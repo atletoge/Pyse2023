@@ -24,6 +24,7 @@ def time_between_instances(): #bytte navn?
     return np.random.exponential(lam)
 
 def user3_generator(env):
+    global i
     while True:
         i = i + 1
         yield env.timeout(time_between_instances())
@@ -31,6 +32,7 @@ def user3_generator(env):
 
 
 def calculate_Q(m,n,k):
+    global q
     #m - antall resource slots, n - antall servere, k - antall brukere
     q = min(1, (m*n)/k)
 
@@ -48,17 +50,14 @@ def calculate_MOS(Q):
     
     else: return 1
 
-def calculate_avg_MOS(mos_scores):
-    total_score = 0
-    for item in mos_scores:
-        total_score += item
-    
-    return total_score/len(mos_scores)
+def calculate_avg_MOS(avg_mos_scores):
+    return sum(avg_mos_scores)/len(avg_mos_scores)
     
 
 def calculate_datacenter_costs():
+    global datacentercost
     for i in range(60*24):
-        datacentercost = datacentercost + calculate_price
+        datacentercost = datacentercost + calculate_price()
 
 #Hvordan user3-funksjon vil se ut før implementering av simulator (oppgave II.A.4):
 # def user3(env, id):
@@ -79,6 +78,14 @@ def calculate_datacenter_costs():
 
 
 def user3(env, id):
+    global k
+    global n
+    global m
+    global timeOfViolation
+    global q
+    global Q_min
+    global avg_mos_scores
+    global avg_q_scores
     k = k+1
     timeOfViolation = 0
     q_values = []
@@ -115,10 +122,12 @@ def user3(env, id):
 
 
 def add_server():
+    global n
     if (n<10):
         n = n+1
 
 def remove_server():
+    global n
     if (n>2):
         n = n-1
 
@@ -127,6 +136,7 @@ def calculate_price():
     return totalPower
 
 def check_price_level():
+    global price
     p_low = 0.1
     p_medium  = 1
     p_high = 5
