@@ -5,20 +5,19 @@ import random
 env = simpy.Environment()
 SIM_TIME = 60*24
 lam = 1
-k = 0
-n = 5
-m = 5
-Q_min = 0.5
-price = 0
-datacentercost = 0
-q = 1
-i = 0 #Flytta denne opp hit
+k = 0 # Antall aktive sesjoner akkurat nå
+n = 5 # Antall servere
+m = 5 # Antall sesjoner per server
+Q_min = 0.5 # Minimum q-verdi oppgitt i oppgavetekst
+price = 0  # Prisen som justeres hele tiden
+datacentercost = 0 # Total kostnad for datasenteret i løpet av simuleringen
+q = 1 # Bandwidth
+i = 0 # Totalt antall brukere
 #Lister for å samle avg. q- og mos-verdier for hver bruker
 avg_q_scores = []
 avg_mos_scores = []
 time_of_violations = []
-# def user_time():
-#     return np.random.exponential(1)     Tror ikke vi trenger denne
+
 
 def time_between_instances(): #bytte navn?
     return np.random.exponential(lam)
