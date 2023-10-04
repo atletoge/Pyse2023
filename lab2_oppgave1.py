@@ -10,6 +10,7 @@ n = 5
 m = 5
 Q_min = 0.5
 price = 0
+datacentercost = 0
 q = 1
 i = 0 #Flytta denne opp hit
 #Lister for å samle avg. q- og mos-verdier for hver bruker
@@ -54,6 +55,10 @@ def calculate_avg_MOS(mos_scores):
     
     return total_score/len(mos_scores)
     
+
+def calculate_datacenter_costs():
+    for i in range(60*24):
+        datacentercost = datacentercost + calculate_price
 
 #Hvordan user3-funksjon vil se ut før implementering av simulator (oppgave II.A.4):
 # def user3(env, id):
@@ -142,11 +147,15 @@ def check_price_level():
 
 # sim = env.process(user3_generator(env))
 
+# sim1 = env.process(user3_generator(env)) For å kjøre prisjustering
+
+# sim2 = env.process(user3_generator(env)) For å kjøre kostnadsstatistikk i datasenter
+
 # env.run(until=SIM_TIME)
 
 
 
-    
+#print(f"Gjennomsnittlig kost på datasenteret i simuleringen har vært {datacentercost/(60*24)}")    
 
 
 
