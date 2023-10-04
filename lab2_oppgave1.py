@@ -78,7 +78,7 @@ def user3(env, id):
     if Q_min < q:
         print(f'User {id} logged in')
         user_login = env.now
-        yield env.timeout(1) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
+        yield env.timeout(60) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
         time_active = env.now - user_login
         q_value = calculate_Q(m,n,k)
         mos_scores.append(calculate_MOS(q_value))
@@ -111,18 +111,18 @@ def check_price_level():
     while True:
         add_server()
         price = p_low
-        yield env.timeout(1)
+        yield env.timeout(60)
         remove_server()
         while True:
             price = p_medium
-            yield env.timeout(1)
+            yield env.timeout(60)
             #Bruker bare random.choice her siden sannsynlighetsvariabelen p ikke er definert i oppgavetekstene, blir i praksis 0.5
             if(random.choice(Liste) == "low"): 
                 break
             else:
                 remove_server()
                 price = p_high
-                yield env.timeout(2)
+                yield env.timeout(120)
                 add_server()
        
 
