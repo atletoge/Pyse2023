@@ -109,8 +109,9 @@ def user3(env, id):
         avg_q_scores.append(avg_q)
         avg_mos = sum(mos_scores)/len(mos_scores)
         avg_mos_scores.append(avg_mos)
-        time_of_violations.append(timeOfViolation)
-
+        if timeOfViolation != 60:
+            time_of_violations.append(timeOfViolation)
+            
         time_active = env.now - user_login
         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
         k = k-1
