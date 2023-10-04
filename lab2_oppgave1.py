@@ -4,7 +4,7 @@ import random
 
 env = simpy.Environment()
 SIM_TIME = 60*24
-lam = 60
+lam = 1
 k = 0
 n = 5
 m = 5
