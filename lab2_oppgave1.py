@@ -12,6 +12,7 @@ Q_min = 0.5
 price = 0
 q = 1
 i = 0 #Flytta denne opp hit
+mos_scores = []
 
 # def user_time():
 #     return np.random.exponential(1)     Tror ikke vi trenger denne
@@ -44,6 +45,14 @@ def calculate_MOS(Q):
     
     else: return 1
 
+def calculate_avg_MOS(mos_scores):
+    total_score = 0
+    for item in mos_scores:
+        total_score += item
+    
+    return total_score/len(mos_scores)
+    
+
 #Hvordan user3-funksjon vil se ut før implementering av simulator (oppgave II.A.4):
 # def user3(env, id):
 #     k = k + 1
@@ -71,7 +80,8 @@ def user3(env, id):
         user_login = env.now
         yield env.timeout(1) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
         time_active = env.now - user_login
-        calculate_Q(m,n,k)
+        q_value = calculate_Q(m,n,k)
+        mos_scores.append(calculate_MOS(q_value))
         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
         k = k-1
         calculate_Q(m,n,k)
