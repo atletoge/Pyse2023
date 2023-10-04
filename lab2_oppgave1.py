@@ -107,7 +107,8 @@ def check_price_level():
         while True:
             price = p_medium
             yield env.timeout(1)
-            if(random.choice(Liste) == "low"): #Bruker bare random.choice her siden sannsynlighetsvariabelen p ikke er definert i oppgavetekstene, blir i praksis 0.5
+            #Bruker bare random.choice her siden sannsynlighetsvariabelen p ikke er definert i oppgavetekstene, blir i praksis 0.5
+            if(random.choice(Liste) == "low"): 
                 break
             else:
                 remove_server()
@@ -115,8 +116,10 @@ def check_price_level():
                 yield env.timeout(2)
                 add_server()
        
-        
 
+# sim = env.process(user3_generator(env))
+
+# env.run(until=SIM_TIME)
 
 
 
