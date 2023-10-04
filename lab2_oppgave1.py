@@ -16,7 +16,7 @@ i = 0 #Flytta denne opp hit
 #Lister for å samle avg. q- og mos-verdier for hver bruker
 avg_q_scores = []
 avg_mos_scores = []
-
+time_of_violations = []
 # def user_time():
 #     return np.random.exponential(1)     Tror ikke vi trenger denne
 
@@ -80,6 +80,7 @@ def calculate_datacenter_costs():
 
 def user3(env, id):
     k = k+1
+    timeOfViolation = 0
     q_values = []
     mos_scores = []
     add_server()
@@ -94,11 +95,14 @@ def user3(env, id):
             mos = calculate_MOS(verdi)
             q_values.append(verdi)
             mos_scores.append(mos)
+            while verdi >= 0.5:
+                timeOfViolation += 1
             yield env.timeout(1)
         avg_q = sum(q_values)/len(q_values)
         avg_q_scores.append(avg_q)
         avg_mos = sum(mos_scores)/len(mos_scores)
         avg_mos_scores.append(avg_mos)
+        time_of_violations.append(timeOfViolation)
 
         time_active = env.now - user_login
         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
