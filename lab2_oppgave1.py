@@ -27,24 +27,25 @@ def user3_generator(env):
     while True:
         i = i + 1
         yield env.timeout(time_between_instances())
-        env.process(user3, i)
+        env.process(user3(env,i))
 
 
 def calculate_Q(m,n,k):
     global q
     #m - antall resource slots, n - antall servere, k - antall brukere
     q = min(1, (m*n)/k)
+    return q
 
-def calculate_MOS(Q):
-    if Q >= 0.9:
+def calculate_MOS(q):
+    if q >= 0.9:
         return 5
-    elif Q >= 0.8 and Q < 0.9:
+    elif q >= 0.8 and q < 0.9:
         return 4
     
-    elif Q >= 0.6 and Q < 0.8:
+    elif q >= 0.6 and q < 0.8:
         return 3
     
-    elif Q >= 0.5 and Q < 0.6:
+    elif q >= 0.5 and q < 0.6:
         return 2
     
     else: return 1
@@ -159,13 +160,13 @@ def check_price_level():
                 add_server()
        
 
-# sim = env.process(user3_generator(env))
+sim = env.process(user3_generator(env))
 
-# sim1 = env.process(user3_generator(env)) For å kjøre prisjustering
+sim1 = env.process(check_price_level()) #For å kjøre prisjustering
 
 # sim2 = env.process(user3_generator(env)) For å kjøre kostnadsstatistikk i datasenter
 
-# env.run(until=SIM_TIME)
+env.run(until=SIM_TIME)
 
 
 
