@@ -44,6 +44,24 @@ def calculate_MOS(Q):
     
     else: return 1
 
+#Hvordan user3-funksjon vil se ut før implementering av simulator (oppgave II.A.4):
+# def user3(env, id):
+#     k = k + 1
+#     calculate_Q(m,n,k)
+#     if Q_min < q:
+#         print(f'User {id} logged in')
+#         user_login = env.now
+#         yield env.timeout(1) 
+#         time_active = env.now - user_login
+#         calculate_Q(m,n,k)
+#         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q} for the price of {userPrice} NOK.')
+#         k = k-1
+#         calculate_Q(m,n,k)
+#     else:
+#         k = k-1
+#         calculate_Q(m,n,k)
+
+
 def user3(env, id):
     k = k+1
     add_server()
