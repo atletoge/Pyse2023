@@ -69,11 +69,10 @@ def user3(env, id):
     if Q_min < q:
         print(f'User {id} logged in')
         user_login = env.now
-        userPrice = calculate_price_for_user()
         yield env.timeout(1) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
         time_active = env.now - user_login
         calculate_Q(m,n,k)
-        print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q} for the price of {userPrice} NOK.')
+        print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
         k = k-1
         calculate_Q(m,n,k)
     else:
@@ -90,7 +89,7 @@ def remove_server():
     if (n>2):
         n = n-1
 
-def calculate_price_for_user():
+def calculate_price():
     totalPower = (m*n)*200*price
     return totalPower
 
