@@ -12,7 +12,9 @@ Q_min = 0.5
 price = 0
 q = 1
 i = 0 #Flytta denne opp hit
-mos_scores = []
+#Lister for å samle avg. q- og mos-verdier for hver bruker
+avg_q_scores = []
+avg_mos_scores = []
 
 # def user_time():
 #     return np.random.exponential(1)     Tror ikke vi trenger denne
@@ -73,15 +75,27 @@ def calculate_avg_MOS(mos_scores):
 
 def user3(env, id):
     k = k+1
+    q_values = []
+    mos_scores = []
     add_server()
     calculate_Q(m,n,k)
     if Q_min < q:
         print(f'User {id} logged in')
         user_login = env.now
-        yield env.timeout(60) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
+        #yield env.timeout(60) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
+        #Går minutt for minutt og regner lokal q og mos
+        for minute in range(61):
+            verdi = calculate_Q(m,n,k)
+            mos = calculate_MOS(verdi)
+            q_values.append(verdi)
+            mos_scores.append(mos)
+            yield env.timeout(1)
+        avg_q = sum(q_values)/len(q_values)
+        avg_q_scores.append(avg_q)
+        avg_mos = sum(mos_scores)/len(mos_scores)
+        avg_mos_scores.append(avg_mos)
+
         time_active = env.now - user_login
-        q_value = calculate_Q(m,n,k)
-        mos_scores.append(calculate_MOS(q_value))
         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
         k = k-1
         calculate_Q(m,n,k)
