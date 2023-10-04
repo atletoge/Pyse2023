@@ -91,8 +91,8 @@ def remove_server():
         n = n-1
 
 def calculate_price_for_user():
-    totalPower = (m*n)*200
-    return (totalPower/k)*price
+    totalPower = (m*n)*200*price
+    return totalPower
 
 def check_price_level():
     p_low = 0.1
