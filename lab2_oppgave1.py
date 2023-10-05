@@ -58,6 +58,7 @@ def calculate_datacenter_costs():
     global datacentercost
     for i in range(60*24):
         datacentercost = datacentercost + calculate_price()
+        yield env.timeout(1)
 
 #Hvordan user3-funksjon vil se ut før implementering av simulator (oppgave II.A.4):
 # def user3(env, id):
@@ -97,13 +98,13 @@ def user3(env, id):
         user_login = env.now
         #yield env.timeout(60) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
         #Går minutt for minutt og regner lokal q og mos
-        for minute in range(61):
+        for minute in range(60):
             verdi = calculate_Q(m,n,k)
             mos = calculate_MOS(verdi)
             q_values.append(verdi)
             mos_scores.append(mos)
-            while verdi >= 0.5:
-                timeOfViolation += 1
+            # while verdi >= 0.5:
+            #     timeOfViolation += 1
             yield env.timeout(1)
         avg_q = sum(q_values)/len(q_values)
         avg_q_scores.append(avg_q)
@@ -164,13 +165,13 @@ sim = env.process(user3_generator(env))
 
 sim1 = env.process(check_price_level()) #For å kjøre prisjustering
 
-# sim2 = env.process(user3_generator(env)) For å kjøre kostnadsstatistikk i datasenter
+sim2 = env.process(calculate_datacenter_costs()) #For å kjøre kostnadsstatistikk i datasenter
 
 env.run(until=SIM_TIME)
 
 
 
-#print(f"Gjennomsnittlig kost på datasenteret i simuleringen har vært {datacentercost/(60*24)}")    
+print(f"Gjennomsnittlig kost på datasenteret per time i simuleringen har vært {datacentercost/(60)}")    
 
 
 
