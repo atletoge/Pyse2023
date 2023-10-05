@@ -1,6 +1,7 @@
 import simpy
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 env = simpy.Environment()
 SIM_TIME = 60*24
@@ -52,13 +53,11 @@ def calculate_MOS(q):
     else: return 1
 
 def calculate_MOS_per_hour():
-    t = 0
     global q
     global mos_per_hour
-    while t < 24:
+    for i in range(24*60):
         mos_per_hour.append(calculate_MOS(q))
-        t += 1
-        yield env.timeout(60)
+        yield env.timeout(1)
 
 def calculate_avg_MOS(avg_mos_scores):
     return sum(avg_mos_scores)/len(avg_mos_scores)
@@ -195,6 +194,18 @@ print(f''' \n
       Time to first GLSA violation: {round(time_of_violation,2)} minutter \n
       Propability for GLSA violation: {round(len(user_violated)/i,2)*100}% \n
       ''')
+
+
+#Plot quality level over time
+x_axis = np.array([i for i in range(24*60)])
+y_axis = np.array([item for item in mos_per_hour])
+
+plt.plot(x_axis, y_axis)
+
+plt.xlabel("minutes")
+plt.ylabel("MOS score")
+
+plt.show()
 
 
 
