@@ -16,6 +16,7 @@ i = 0 # Totalt antall brukere
 #Lister for å samle avg. q- og mos-verdier for hver bruker
 avg_q_scores = []
 avg_mos_scores = []
+mos_per_hour = []
 time_of_violation = 0
 user_violated = set()
 
@@ -49,6 +50,15 @@ def calculate_MOS(q):
         return 2
     
     else: return 1
+
+def calculate_MOS_per_hour():
+    t = 0
+    global q
+    global mos_per_hour
+    while t < 24:
+        mos_per_hour.append(calculate_MOS(q))
+        t += 1
+        yield env.timeout(60)
 
 def calculate_avg_MOS(avg_mos_scores):
     return sum(avg_mos_scores)/len(avg_mos_scores)
@@ -173,6 +183,8 @@ sim = env.process(user3_generator(env))
 sim1 = env.process(check_price_level()) #For å kjøre prisjustering
 
 sim2 = env.process(calculate_datacenter_costs()) #For å kjøre kostnadsstatistikk i datasenter
+
+sim3 = env.process(calculate_MOS_per_hour()) #For å beregne MOS hver time
 
 env.run(until=SIM_TIME)
 
