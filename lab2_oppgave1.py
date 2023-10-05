@@ -135,7 +135,7 @@ def remove_server():
 
 def calculate_price():
     totalPower = (m*n)*200*price
-    return totalPower
+    return totalPower/60
 
 def check_price_level():
     global price
@@ -171,7 +171,7 @@ env.run(until=SIM_TIME)
 
 
 
-print(f"Gjennomsnittlig kost på datasenteret per time i simuleringen har vært {datacentercost/(60)}")    
+print(f"Gjennomsnittlig kost på datasenteret per minutt i simuleringen har vært {datacentercost/(60*24)}")    
 
 
 
