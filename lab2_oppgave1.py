@@ -115,8 +115,8 @@ def user3(env, id):
         avg_mos = sum(mos_scores)/len(mos_scores)
         avg_mos_scores.append(avg_mos)
             
-        time_active = env.now - user_login
-        print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
+        time_active = int(env.now - user_login)
+        print(f'User {id} was active for {time_active} minutes and had an average bandwidth of {round(q,2)} and a average MOS score of {round(avg_mos,2)}.')
         k = k-1
         calculate_Q(m,n,k)
     else:
@@ -124,6 +124,7 @@ def user3(env, id):
         if time_of_violation == 0:
             time_of_violation = env.now
         user_violated.add(id)
+        print(f'User {id} got rejected...')
         k = k-1
         calculate_Q(m,n,k)
     remove_server()
@@ -176,10 +177,12 @@ sim2 = env.process(calculate_datacenter_costs()) #For å kjøre kostnadsstatisti
 env.run(until=SIM_TIME)
 
 
-
-print(f"Gjennomsnittlig kost på datasenteret per minutt i simuleringen har vært {datacentercost/(60*24)}")
-print(f'Tid til første GLSA violation: {time_of_violation}')
-print(f'Sannsynlighet for GLSA violation: {len(user_violated)/i}')    
+print(f''' \n
+      ----------------------Statistics---------------------- \n
+      Average cost in the data center: {round(datacentercost/(60*24),2)}NOK/minute \n
+      Time to first GLSA violation: {round(time_of_violation,2)} minutter \n
+      Propability for GLSA violation: {round(len(user_violated)/i,2)*100}% \n
+      ''')
 
 
 
