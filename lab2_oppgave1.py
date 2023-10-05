@@ -16,7 +16,7 @@ i = 0 # Totalt antall brukere
 #Lister for å samle avg. q- og mos-verdier for hver bruker
 avg_q_scores = []
 avg_mos_scores = []
-time_of_violations = []
+time_of_violation = 0
 
 
 def time_between_instances(): #bytte navn?
@@ -82,13 +82,12 @@ def user3(env, id):
     global k
     global n
     global m
-    global timeOfViolation
+    global time_of_violation
     global q
     global Q_min
     global avg_mos_scores
     global avg_q_scores
     k = k+1
-    timeOfViolation = 0
     q_values = []
     mos_scores = []
     add_server()
@@ -100,6 +99,9 @@ def user3(env, id):
         #Går minutt for minutt og regner lokal q og mos
         for minute in range(60):
             verdi = calculate_Q(m,n,k)
+            if verdi < 0.5:
+                if time_of_violation == 0:
+                    time_of_violation = env.now
             mos = calculate_MOS(verdi)
             q_values.append(verdi)
             mos_scores.append(mos)
@@ -110,14 +112,15 @@ def user3(env, id):
         avg_q_scores.append(avg_q)
         avg_mos = sum(mos_scores)/len(mos_scores)
         avg_mos_scores.append(avg_mos)
-        if timeOfViolation != 60:
-            time_of_violations.append(timeOfViolation)
             
         time_active = env.now - user_login
         print(f'User {id} was active for {time_active} minutes and had a bandwidth of {q}.')
         k = k-1
         calculate_Q(m,n,k)
     else:
+        #Må klokke inn tida dersom første bruker ikke kom inn, men det kommer ikke til å skje
+        if time_of_violation == 0:
+            time_of_violation = env.now
         k = k-1
         calculate_Q(m,n,k)
     remove_server()
@@ -171,7 +174,8 @@ env.run(until=SIM_TIME)
 
 
 
-print(f"Gjennomsnittlig kost på datasenteret per time i simuleringen har vært {datacentercost/(60)}")    
+print(f"Gjennomsnittlig kost på datasenteret per time i simuleringen har vært {datacentercost/(60)}")
+print(f'Tid til første GLSA violation: {time_of_violation}')    
 
 
 
