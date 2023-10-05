@@ -20,6 +20,7 @@ avg_mos_scores = []
 mos_per_hour = []
 time_of_violation = 0
 user_violated = set()
+datacentercostlist = []
 
 def time_between_instances(): #bytte navn?
     return np.random.exponential(lam)
@@ -65,8 +66,10 @@ def calculate_avg_MOS(avg_mos_scores):
 
 def calculate_datacenter_costs():
     global datacentercost
+    global datacentercostlist
     for i in range(60*24):
         datacentercost = datacentercost + calculate_price()
+        datacentercostlist.append(calculate_price())
         yield env.timeout(1)
 
 #Hvordan user3-funksjon vil se ut før implementering av simulator (oppgave II.A.4):
@@ -197,17 +200,34 @@ print(f''' \n
 
 
 #Plot quality level over time
-x_axis = np.array([i for i in range(24*60)])
-y_axis = np.array([item for item in mos_per_hour])
+# time_x_axis = np.array([i for i in range(24*60)])
+# mos_x_axis = np.array([item for item in mos_per_hour])
+# cost_y_axis = np.array([item for item in datacentercostlist])
+# plt.plot(time_x_axis, cost_y_axis)
 
-plt.plot(x_axis, y_axis)
+# plt.xlabel("minutes")
+# plt.ylabel("Price in NOK")
 
-plt.xlabel("minutes")
-plt.ylabel("MOS score")
-
-plt.show()
+# plt.show()
 
 
+# fig, ax1 = plt.subplots()
+
+# color = 'tab:red'
+# ax1.set_xlabel('time (m)')
+# ax1.set_ylabel('Quality', color=color)
+# ax1.plot(time_x_axis, mos_x_axis, color=color)
+# ax1.tick_params(axis='y', labelcolor=color)
+
+# ax2 = ax1.twinx()
+
+# color = 'tab:blue'
+# ax2.set_ylabel('price', color=color)
+# ax2.plot(time_x_axis,cost_y_axis, color=color)
+# ax2.tick_params(axis='y', labelcolor=color)
+
+# fig.tight_layout()
+# plt.show()
 
 
 
