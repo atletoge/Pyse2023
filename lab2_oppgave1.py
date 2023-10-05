@@ -17,7 +17,7 @@ i = 0 # Totalt antall brukere
 avg_q_scores = []
 avg_mos_scores = []
 time_of_violation = 0
-
+user_violated = set()
 
 def time_between_instances(): #bytte navn?
     return np.random.exponential(lam)
@@ -87,6 +87,7 @@ def user3(env, id):
     global Q_min
     global avg_mos_scores
     global avg_q_scores
+    global user_violated
     k = k+1
     q_values = []
     mos_scores = []
@@ -100,6 +101,7 @@ def user3(env, id):
         for minute in range(60):
             verdi = calculate_Q(m,n,k)
             if verdi < 0.5:
+                user_violated.add(id)
                 if time_of_violation == 0:
                     time_of_violation = env.now
             mos = calculate_MOS(verdi)
@@ -121,6 +123,7 @@ def user3(env, id):
         #Må klokke inn tida dersom første bruker ikke kom inn, men det kommer ikke til å skje
         if time_of_violation == 0:
             time_of_violation = env.now
+        user_violated.add(id)
         k = k-1
         calculate_Q(m,n,k)
     remove_server()
@@ -175,7 +178,8 @@ env.run(until=SIM_TIME)
 
 
 print(f"Gjennomsnittlig kost på datasenteret per minutt i simuleringen har vært {datacentercost/(60*24)}")
-print(f'Tid til første GLSA violation: {time_of_violation}')    
+print(f'Tid til første GLSA violation: {time_of_violation}')
+print(f'Sannsynlighet for GLSA violation: {len(user_violated)/i}')    
 
 
 
