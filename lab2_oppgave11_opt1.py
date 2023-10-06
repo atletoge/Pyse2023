@@ -168,6 +168,7 @@ def check_price_level():
         yield env.timeout(60)
         remove_server()
         while True:
+            Q_min = 0.5
             price = p_medium
             yield env.timeout(60)
             #Bruker bare random.choice her siden sannsynlighetsvariabelen p ikke er definert i oppgavetekstene, blir i praksis 0.5
@@ -175,6 +176,7 @@ def check_price_level():
                 break
             else:
                 remove_server()
+                Q_min = 0.75
                 price = p_high
                 yield env.timeout(120)
                 add_server()
