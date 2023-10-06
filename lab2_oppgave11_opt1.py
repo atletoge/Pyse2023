@@ -158,6 +158,7 @@ def calculate_price():
 
 def check_price_level():
     global price
+    global Q_min
     p_low = 0.1
     p_medium  = 1
     p_high = 5
