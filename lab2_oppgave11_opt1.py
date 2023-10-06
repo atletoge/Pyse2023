@@ -20,6 +20,7 @@ mos_per_hour = [] #Liste for å samle mos-verdier i systemet hver time til plott
 time_of_violation = 0 #For å måle første GLSA violation i systemet
 user_violated = set() #Samle opp alle som har opplevd GLSA violation
 datacentercostlist = [] #Samle opp kostnadene over tid 
+number_of_rejected = []
 
 #Modell for generatoren
 def user3_generator(env):
@@ -118,6 +119,8 @@ def user3(env, id):
     mos_scores = [] #For å samle opp alle målte mos-verdier for bruker
     add_server()
     calculate_Q(m,n,k) #Beregner q-verdi for å se om bruker kan logge inn eller ikke
+    if q < 0.5 and price == 5:
+        remove_server()
     if Q_min < q:
         print(f'User {id} logged in')
         user_login = env.now
@@ -148,6 +151,7 @@ def user3(env, id):
             time_of_violation = env.now
         user_violated.add(id)
         print(f'User {id} got rejected...')
+        number_of_rejected.append(id)
         k = k-1
         calculate_Q(m,n,k)
     remove_server()
@@ -155,7 +159,7 @@ def user3(env, id):
 
 #Modell for å sjekke prisnivå til systemet
 def check_price_level():
-    global price, Q_min
+    global price
     p_low = 0.1
     p_medium  = 1
     p_high = 5
@@ -174,7 +178,6 @@ def check_price_level():
                 break
             else:
                 remove_server()
-                Q_min = 0.75
                 price = p_high
                 yield env.timeout(120)
                 add_server()
@@ -198,6 +201,7 @@ print(f''' \n
       Propability for GLSA violation: {round(len(user_violated)/i,2)*100}% \n
       Average bandwidth, Q, per user: {round(sum(avg_q_scores)/len(avg_q_scores), 2)} \n
       Average quality, MOS(Q), per user: {round(sum(avg_mos_scores)/len(avg_mos_scores), 2)} \n
+      Number of users rejected entrance: {len(number_of_rejected)}
       ''')
 
 
