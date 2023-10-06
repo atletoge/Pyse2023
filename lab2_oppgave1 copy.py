@@ -186,7 +186,7 @@ sim2 = env.process(calculate_datacenter_costs()) #For å kjøre kostnadsstatisti
 
 sim3 = env.process(calculate_MOS_per_hour()) #For å beregne MOS hver time
 
-test = env.run(until=SIM_TIME)
+env.run(until=SIM_TIME)
 
 
 print(f''' \n

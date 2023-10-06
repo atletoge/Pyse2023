@@ -1,4 +1,5 @@
 import lab2_oppgave1 as lab
+import simpy
 
 def reset_global_values():
     global k
@@ -16,7 +17,9 @@ def reset_global_values():
     global user_violated
     global datacentercostlist
     global SIM_TIME
+    global env
 
+    env = simpy.Environment()
     SIM_TIME = 60*24
     k = 0 # Antall aktive sesjoner akkurat nå
     n = 5 # Antall servere
@@ -33,11 +36,23 @@ def reset_global_values():
     user_violated = set() #Samle opp alle som har opplevd GLSA violation
     datacentercostlist = [] #Samle opp kostnadene over tid 
 
-
+average_time_GSLA = []
+probability_GSLA = []
+average_bandwidth = []
+average_quality = []
+average_cost = []
 for i in range(10):
-    reset_global_values()
+    lab.env
     lab.sim
     lab.sim1
     lab.sim2
     lab.sim3
-    lab.env.run(until=SIM_TIME)
+    lab.test
+    average_cost.append(round(lab.datacentercost/(60*24),2))
+    average_time_GSLA.append(round(lab.time_of_violation,2))
+    probability_GSLA.append(round(len(lab.user_violated)/lab.i,2)*100)
+    average_bandwidth.append(round(sum(lab.avg_q_scores)/len(lab.avg_q_scores), 2))
+    average_quality.append(round(sum(lab.avg_mos_scores)/len(lab.avg_mos_scores), 2))
+    reset_global_values()
+
+print(average_cost)
