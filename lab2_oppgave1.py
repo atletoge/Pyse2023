@@ -194,6 +194,8 @@ print(f''' \n
       Average cost in the data center: {round(datacentercost/(60*24),2)}NOK/minute \n
       Time to first GLSA violation: {round(time_of_violation,2)} minutes \n
       Propability for GLSA violation: {round(len(user_violated)/i,2)*100}% \n
+      Average bandwidth, Q, per user: {round(sum(avg_q_scores)/len(avg_q_scores), 2)} \n
+      Average quality, MOS(Q), per user: {round(sum(avg_mos_scores)/len(avg_mos_scores), 2)} \n
       ''')
 
 
