@@ -21,6 +21,7 @@ time_of_violation = 0 #For å måle første GLSA violation i systemet
 user_violated = set() #Samle opp alle som har opplevd GLSA violation
 datacentercostlist = [] #Samle opp kostnadene over tid 
 number_of_rejected = []
+k_max = 50
 
 #Modell for generatoren
 def user3_generator(env):
@@ -119,13 +120,10 @@ def user3(env, id):
     mos_scores = [] #For å samle opp alle målte mos-verdier for bruker
     add_server()
     calculate_Q(m,n,k) #Beregner q-verdi for å se om bruker kan logge inn eller ikke
-    if q < 0.5 and price == 5:
-        remove_server()
-    if Q_min < q:
+
+    if (Q_min < q and price != 5) or (Q_min < q and price == 5 and k<k_max):
         print(f'User {id} logged in')
         user_login = env.now
-        #yield env.timeout(60) #Endrer denne siden det ikke virker å være random timeout på user, ser ut som alle bruker 1 time
-        #Går minutt for minutt og regner lokal q og mos og sjekker om vi får en GLSA violation 
         for minute in range(60):
             verdi = calculate_Q(m,n,k)
             if verdi < 0.5:
@@ -145,6 +143,7 @@ def user3(env, id):
         print(f'User {id} was active for {time_active} minutes and had an average bandwidth of {round(q,2)} and an average MOS score of {round(avg_mos,2)}.')
         k = k-1
         calculate_Q(m,n,k)
+
     else:
         #Må klokke inn tida dersom første bruker ikke kom inn, men det kommer ikke til å skje
         if time_of_violation == 0:
