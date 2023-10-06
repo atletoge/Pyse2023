@@ -42,11 +42,6 @@ average_bandwidth = []
 average_quality = []
 average_cost = []
 for i in range(10):
-    lab.env
-    lab.sim
-    lab.sim1
-    lab.sim2
-    lab.sim3
     lab.test
     average_cost.append(round(lab.datacentercost/(60*24),2))
     average_time_GSLA.append(round(lab.time_of_violation,2))
