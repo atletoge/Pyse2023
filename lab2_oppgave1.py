@@ -202,37 +202,35 @@ print(f''' \n
       ''')
 
 
-#Plot quality level over time
-# time_x_axis = np.array([i for i in range(24*60)])
-# #mos_x_axis = np.array([item for item in mos_per_hour])
-# cost_y_axis = np.array([item for item in datacentercostlist])
-# plt.plot(time_x_axis, cost_y_axis)
+time_array = np.array([i for i in range(24*60)])
+mos_array = np.array([item for item in mos_per_hour])
+cost_array = np.array([item for item in datacentercostlist])
 
+
+# #Plot price level over time
+# plt.plot(time_array, cost_array)
 # plt.xlabel("minutes")
 # plt.ylabel("Price in NOK")
+# plt.show()
 
+# #Plot quality level over time
+# plt.plot(time_array, mos_array)
+# plt.xlabel("minutes")
+# plt.ylabel("Quality")
 # plt.show()
 
 
+# # Plot price and quality together over time
 # fig, ax1 = plt.subplots()
-
 # color = 'tab:red'
 # ax1.set_xlabel('time (m)')
 # ax1.set_ylabel('Quality', color=color)
-# ax1.plot(time_x_axis, mos_x_axis, color=color)
+# ax1.plot(time_array, mos_array, color=color)
 # ax1.tick_params(axis='y', labelcolor=color)
-
 # ax2 = ax1.twinx()
-
 # color = 'tab:blue'
 # ax2.set_ylabel('price', color=color)
-# ax2.plot(time_x_axis,cost_y_axis, color=color)
+# ax2.plot(time_array,cost_array, color=color)
 # ax2.tick_params(axis='y', labelcolor=color)
-
 # fig.tight_layout()
 # plt.show()
-
-
-
-
-
