@@ -53,7 +53,7 @@ def calculate_MOS(q):
     
     else: return 1
 
-def calculate_MOS_per_hour():
+def calculate_MOS_per_minute():
     global q
     global mos_per_hour
     for i in range(24*60):
@@ -186,7 +186,7 @@ sim1 = env.process(check_price_level()) #For å kjøre prisjustering
 
 sim2 = env.process(calculate_datacenter_costs()) #For å kjøre kostnadsstatistikk i datasenter
 
-sim3 = env.process(calculate_MOS_per_hour()) #For å beregne MOS hver time
+sim3 = env.process(calculate_MOS_per_minute()) #For å beregne MOS hver time
 
 env.run(until=SIM_TIME)
 
