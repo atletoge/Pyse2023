@@ -14,12 +14,29 @@ repairmen_values = [1, 2, 3]
 mdt_serial = []
 mdt_parallell = []
 failures = 0
-lambda_f = 1/20
-lambda_r = 1/2
+#lambda_f = 1/20
+#lambda_r = 1/2
 SIM_TIME = 24*60 #Vet ikke hvor lenge vi skal simulere
 servers_up = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 active_servers = 14
 sim_active = True
+
+
+def server_generator(env):
+    while sim_active:
+        yield env.timeout(np.random.exponential(lambda_srv))
+        env.process(server(env))
+
+def server(env):
+    global active_servers, failures
+    if(active_servers < 15 and active_servers > 0):
+        active_servers = active_servers-1
+        failures = failures + 1
+        if (failures >= 100):
+            sim_active = False
+
+
+
 
 
 
