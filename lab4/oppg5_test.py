@@ -110,43 +110,37 @@ def calculate_confidence_interval(data):
     return confidence_interval
 
 # Calculate mean and confidence intervals
-mean1 = np.mean(downtimeListeSeriell1)
-ci1 = calculate_confidence_interval(downtimeListeSeriell1)
+mean1s = np.mean(downtimeListeSeriell1)
+ci1s = calculate_confidence_interval(downtimeListeSeriell1)
+mean1p = np.mean(downtimeListeParalell1)
+ci1p = calculate_confidence_interval(downtimeListeParalell1)
 
-mean2 = np.mean(downtimeListeSeriell2)
-ci2 = calculate_confidence_interval(downtimeListeSeriell2)
+mean2s = np.mean(downtimeListeSeriell2)
+ci2s = calculate_confidence_interval(downtimeListeSeriell2)
+mean2p = np.mean(downtimeListeParalell2)
+ci2p = calculate_confidence_interval(downtimeListeParalell2)
 
-mean3 = np.mean(downtimeListeSeriell3)
-ci3 = calculate_confidence_interval(downtimeListeSeriell3)
+mean3s = np.mean(downtimeListeSeriell3)
+ci3s = calculate_confidence_interval(downtimeListeSeriell3)
+mean3p = np.mean(downtimeListeParalell3)
+ci3p = calculate_confidence_interval(downtimeListeParalell3)
 
 # Plotting
 repairmen_scenarios = [1, 2, 3]
-means = [mean1, mean2, mean3]
-conf_intervals = [ci1, ci2, ci3]
+means_s = [mean1s, mean2s, mean3s]
+means_p = [mean1p, mean2p, mean3p]
+conf_intervals_s = [ci1s, ci2s, ci3s]
+conf_intervals_p = [ci1p, ci2p, ci3p]
 
-plt.errorbar(repairmen_scenarios, means, yerr=np.array(conf_intervals).T, fmt='o', capsize=5)
+plt.errorbar(repairmen_scenarios, means_s, yerr=np.array(conf_intervals_s).T, fmt='o', capsize=5)
 plt.xlabel('Number of Repairmen')
 plt.ylabel('Average Downtime (Seriell)')
 plt.title('Average DowntimeSeriell with 95% Confidence Intervals')
 plt.show()
 
 
-# # Calculate the confidence interval using numpy
-# confidence_level = 0.95
-# data_seriell = np.array(downtimeListeSeriell)
-# mean_seriell = np.mean(data_seriell)
-# confidence_interval_seriell = np.percentile(data_seriell, [100 * (1 - confidence_level / 2), 100 * (confidence_level / 2)])
-# std_seriell = np.std(data_seriell)
-
-# # Print the results
-# print(f"Mean Downtime (Seriell): {mean_seriell}")
-# print(f"Standard Deviation (Seriell): {std_seriell}")
-# print(f"Confidence Interval (95%) (Seriell): {confidence_interval_seriell}")
-
-# # Plot the results using errorbar
-# plt.errorbar(1, mean_seriell, yerr=std_seriell, fmt='o', label='Mean Downtime (Seriell)')
-# plt.title('Mean Downtime with 95% Confidence Interval (Seriell)')
-# plt.xlabel('Simulation Results')
-# plt.ylabel('Mean Downtime')
-# plt.legend()
-# plt.show()
+plt.errorbar(repairmen_scenarios, means_p, yerr=np.array(conf_intervals_p).T, fmt='o', capsize=5)
+plt.xlabel('Number of Repairmen')
+plt.ylabel('Average Downtime (Paralell)')
+plt.title('Average DowntimeParalell with 95% Confidence Intervals')
+plt.show()
