@@ -42,7 +42,7 @@ def server(env):
 
 def repairmen_generator(env):
     while sim_active:
-        yield env.timeout(np.random.exponential(1/mu_srv))
+        yield env.timeout(1/mu_srv)
         repairmen(env)
 
 def repairmen(env):
@@ -61,7 +61,6 @@ simServer = env.process(server_generator(env))
 simRepairmen = env.process(repairmen_generator(env))
 
 running = env.run(until=SIM_TIME)
-
 downtimeListeSeriell1 = downtimeListeSeriell
 downtimeListeParalell1 = downtimeListeParalell
 
@@ -112,25 +111,25 @@ def calculate_confidence_interval(data):
 # Calculate mean and confidence intervals
 mean1s = np.mean(downtimeListeSeriell1)
 ci1s = calculate_confidence_interval(downtimeListeSeriell1)
-mean1p = np.mean(downtimeListeParalell1)
-ci1p = calculate_confidence_interval(downtimeListeParalell1)
+# mean1p = np.mean(downtimeListeParalell1)
+# ci1p = calculate_confidence_interval(downtimeListeParalell1)
 
 mean2s = np.mean(downtimeListeSeriell2)
 ci2s = calculate_confidence_interval(downtimeListeSeriell2)
-mean2p = np.mean(downtimeListeParalell2)
-ci2p = calculate_confidence_interval(downtimeListeParalell2)
+# mean2p = np.mean(downtimeListeParalell2)
+# ci2p = calculate_confidence_interval(downtimeListeParalell2)
 
 mean3s = np.mean(downtimeListeSeriell3)
 ci3s = calculate_confidence_interval(downtimeListeSeriell3)
-mean3p = np.mean(downtimeListeParalell3)
-ci3p = calculate_confidence_interval(downtimeListeParalell3)
+# mean3p = np.mean(downtimeListeParalell3)
+# ci3p = calculate_confidence_interval(downtimeListeParalell3)
 
 # Plotting
 repairmen_scenarios = [1, 2, 3]
 means_s = [mean1s, mean2s, mean3s]
-means_p = [mean1p, mean2p, mean3p]
+# means_p = [mean1p, mean2p, mean3p]
 conf_intervals_s = [ci1s, ci2s, ci3s]
-conf_intervals_p = [ci1p, ci2p, ci3p]
+# conf_intervals_p = [ci1p, ci2p, ci3p]
 
 plt.errorbar(repairmen_scenarios, means_s, yerr=np.array(conf_intervals_s).T, fmt='o', capsize=5)
 plt.xlabel('Number of Repairmen')
@@ -139,8 +138,8 @@ plt.title('Average DowntimeSeriell with 95% Confidence Intervals')
 plt.show()
 
 
-plt.errorbar(repairmen_scenarios, means_p, yerr=np.array(conf_intervals_p).T, fmt='o', capsize=5)
-plt.xlabel('Number of Repairmen')
-plt.ylabel('Average Downtime (Paralell)')
-plt.title('Average DowntimeParalell with 95% Confidence Intervals')
-plt.show()
+# plt.errorbar(repairmen_scenarios, means_p, yerr=np.array(conf_intervals_p).T, fmt='o', capsize=5)
+# plt.xlabel('Number of Repairmen')
+# plt.ylabel('Average Downtime (Paralell)')
+# plt.title('Average DowntimeParalell with 95% Confidence Intervals')
+# plt.show()
