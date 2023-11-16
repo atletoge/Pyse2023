@@ -22,23 +22,7 @@ active_servers = 14
 sim_active = True
 
 
-def server_generator(env):
-    global n_servers
-    i = 0
-    while i <= n_servers:
-        env.process(server(env, i))
 
-def server(env, id):
-    global num_failures
-    count_failure = 0
-    while count_failure < num_failures:
-    #     if server fail:
-    #         start = env.now
-    #     if server repaired:
-    #         slutt = env.now
-    #         mdt.append(slutt-start)
-        None
-    #stopp simulering når vi har 100 failures.
 
 #Metode for å sjekke antall aktive servere til enhver tid (sjekker hvert minutt i dette tilfelle)
 def checkServerUpCount():
