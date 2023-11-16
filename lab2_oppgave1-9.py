@@ -56,7 +56,7 @@ def calculate_MOS(q):
 
 def calculate_MOS_per_minute():
     global q
-    global mos_per_hour
+    global mos_per_hour5
     for i in range(24*60):
         mos_per_hour.append(calculate_MOS(q))
         yield env.timeout(1)

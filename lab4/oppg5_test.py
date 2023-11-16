@@ -17,15 +17,10 @@ failures = 0
 lambda_f = 1/20
 lambda_r = 1/2
 SIM_TIME = 24*60 #Vet ikke hvor lenge vi skal simulere
+servers_up = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+active_servers = 14
+sim_active = True
 
-def calculateMDT(liste):
-    return round(sum(liste)/len(liste),3)
-
-def time_between_failure():
-    return np.random.exponential(lambda_f)
-
-def time_between_repair():
-    return np.random.exponential(lambda_r)
 
 def server_generator(env):
     global n_servers
@@ -45,7 +40,17 @@ def server(env, id):
         None
     #stopp simulering når vi har 100 failures.
 
+#Metode for å sjekke antall aktive servere til enhver tid (sjekker hvert minutt i dette tilfelle)
+def checkServerUpCount():
+    global servers_up
+    global active_servers
+    while sim_active:
+        servers_up[active_servers] = servers_up[active_servers] # Teller hvor mye av tiden det er x antall aktive servere
+        env.timeout(1)
+
+
 sim = env.process(server_generator(env))
+simServerCount = env.process(checkServerUpCount())
 
 running = env.run(until=SIM_TIME)
 
