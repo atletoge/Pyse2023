@@ -14,10 +14,9 @@ repairmen_values = [1, 2, 3]
 mdt_serial = []
 mdt_parallell = []
 failures = 0
-#lambda_f = 1/20
-#lambda_r = 1/2
 SIM_TIME = 24*60 #Vet ikke hvor lenge vi skal simulere
 servers_up = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+verdier = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
 active_servers = 14
 sim_active = True # Brukes til å sjekke om vi har nådd 100 failures
 
@@ -60,6 +59,17 @@ def checkServerUpCount():
             sim_active = False
 
 
+def calculateStandardDeviation():
+    global servers_up, verdier
+    meanValue = np.dot(servers_up,verdier)/sum(servers_up)
+    print(meanValue)
+    varians = 0
+    for i in range(len(servers_up)):
+        varians += (servers_up[i]*(i-meanValue)**2)/len(servers_up)
+    return np.sqrt(varians)
+
+
+
 simServer = env.process(server_generator(env))
 simServerCount = env.process(checkServerUpCount())
 simRepairmen = env.process(repairmen_generator(env))
@@ -67,5 +77,34 @@ simRepairmen = env.process(repairmen_generator(env))
 running = env.run(until=SIM_TIME)
 print(servers_up)
 
+standardDeviation = calculateStandardDeviation()
+meanDowntimeSeriell = (sum(servers_up)-servers_up[-1])/sum(servers_up)
+print(meanDowntimeSeriell)
+
+print(standardDeviation)
 
 
+# Calculate the confidence interval
+confidence_level = 0.95
+degrees_of_freedom = len(servers_up) - 1
+alpha = 1 - confidence_level
+
+# Calculate the standard error of the mean
+standard_error = standardDeviation / np.sqrt(len(servers_up))
+
+# Calculate the margin of error
+margin_of_error = t.ppf(1 - alpha / 2, degrees_of_freedom) * standard_error
+
+# Calculate the confidence interval
+lower_bound = meanDowntimeSeriell - margin_of_error
+upper_bound = meanDowntimeSeriell + margin_of_error
+
+# Plot the results
+fig, ax = plt.subplots()
+ax.bar(verdier, servers_up, alpha=0.7, label='Server Count')
+ax.errorbar([np.mean(verdier)], [meanDowntimeSeriell], yerr=[margin_of_error], fmt='ro', label='Mean Downtime (95% CI)')
+
+ax.set_xlabel('Number of Active Servers')
+ax.set_ylabel('Count')
+ax.legend()
+plt.show()
